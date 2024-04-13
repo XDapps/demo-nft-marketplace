@@ -133,12 +133,12 @@ contract NFTMarketplace is Ownable {
         address paymentToken = listings[listingId].paymentToken;
         uint256 askingPrice = listings[listingId].askingPrice;
         require(_expectedPrice >= askingPrice, "Error: Price Changed");
-		require(msg.sender != owner, "Error: Buyer cannot be the owner of the token");
+        require(msg.sender != owner, "Error: Buyer cannot be the owner of the token");
         require(hasTransferApproval(owner, tokenAddress, tokenId), "Error: owner revoked transfer approval.");
         //Remove Listing
         tokenListingId[tokenAddress][tokenId] = 0;
         listings[listingId].askingPrice = 0;
-		//Handle Payments
+        //Handle Payments
         _transferPayments(owner, msg.sender, paymentToken, askingPrice);
         //Transfer NFT
         IERC721(tokenAddress).transferFrom(owner, msg.sender, tokenId);
@@ -147,7 +147,7 @@ contract NFTMarketplace is Ownable {
     }
     //************************* Helpers *************************/
     function _transferPayments(address _seller, address _buyer, address _paymentToken, uint256 _amount) private {
-		if (_paymentToken == address(0)) {
+        if (_paymentToken == address(0)) {
             _transferNativePayments(_seller, _amount);
         } else {
             _transferERC20Payments(_seller, _buyer, _paymentToken, _amount);
